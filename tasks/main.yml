@@ -12,8 +12,7 @@
     mode: 0700
 
 - name: Clone docker pleroma
-  - name: Git checkout
-  ansible.builtin.git:
+  git:
     repo: 'https://foosball.example.org/path/to/repo.git'
     dest: "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files/docker-pleroma"
     version: master
