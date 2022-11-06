@@ -1,60 +1,7 @@
 ---
-
-- name: 'Check mandatory variables are defined'
-  assert:
-    that:
-      - application_name is defined
-      - cloudwatch_region is defined
-      - cloudwatch_log_group is defined
-      - database_url is defined
-      - domain_name is defined
-      - database_container_name is defined
-      - database_user is defined
-      - database_password is defined
-      - dump_day is defined
-
-
-- name: Create the files directory
-  file:
-    path: "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files"
-    state: directory
-    mode: 0700
-
-- name: Create app container
-  docker_container:
-    name: "{{ application_name }}"
-    image: "namelivia/{{ application_name }}:latest"
-    memory: "200MB"
-    pull: true
-    restart_policy: "always"
-    log_driver: "awslogs"
-    log_options:
-      awslogs-region: "{{ cloudwatch_region }}"
-      awslogs-group: "{{ cloudwatch_log_group }}"
-      awslogs-stream: "{{ application_name }}"
-    networks:
-      - name: "pleroma"
-    exposed_ports:
-      - "80"
-    env:
-      DATABASE_URL: "{{ database_url }}"
-      VIRTUAL_HOST: "{{ domain_name }}"
-      VIRTUAL_PATH: "{{ subpath }}"
-      VIRTUAL_DEST: "/"
-      LETSENCRYPT_HOST: "{{ domain_name }}"
-      VIRTUAL_PORT: "80"
-
-- name: Create database
-  include_role:
-    name: ansible-postgres
-    tasks_from: create-postgres-database-if-not-exists
-
-- name: Setup database backups
-  include_role:
-    name: ansible-backups
-    tasks_from: setup-postgres-database-backups
-
-- name: Setup S3 backups
-  include_role:
-    name: ansible-backups
-    tasks_from: setup-s3-backups
+- name: Build docker image
+  docker_image:
+    name: pleroma
+    build:
+      path: ./docker_pleroma/
+    source: build
