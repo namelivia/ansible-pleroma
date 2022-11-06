@@ -78,10 +78,6 @@
       awslogs-region: "{{ cloudwatch_region }}"
       awslogs-group: "{{ cloudwatch_log_group }}"
       awslogs-stream: "pleroma-database"
-    volumes:
-      - "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files/uploads:/var/lib/pleroma/uploads"
-      - "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files/static:/var/lib/pleroma/static"
-      - "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files/config.exs:/etc/pleroma/config.exs:ro"
     env:
       POSTGRES_USER: "{{ db_user }}"
       POSTGRES_PASSWORD: "{{ db_pass }}"
@@ -101,6 +97,10 @@
       - "4000"
     networks:
       - name: "{{ docker_network_name }}"
+    volumes:
+      - "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files/uploads:/var/lib/pleroma/uploads"
+      - "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files/static:/var/lib/pleroma/static"
+      - "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files/config.exs:/etc/pleroma/config.exs:ro"
     env:
       VIRTUAL_HOST: "{{ domain_name }}"
       LETSENCRYPT_HOST: "{{ domain_name }}"
