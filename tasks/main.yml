@@ -26,6 +26,18 @@
     state: directory
     mode: 0700
 
+- name: Create the uploads directory
+  file:
+    path: "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files/uploads"
+    state: directory
+    mode: 0755
+
+- name: Create the static directory
+  file:
+    path: "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files/static"
+    state: directory
+    mode: 0755
+
 - name: Clone docker pleroma
   git:
     repo: 'https://github.com/angristan/docker-pleroma.git'
@@ -57,6 +69,9 @@
       awslogs-region: "{{ cloudwatch_region }}"
       awslogs-group: "{{ cloudwatch_log_group }}"
       awslogs-stream: "pleroma-database"
+    volumes:
+      - "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/uploads:/var/lib/pleroma/uploads"
+      - "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/static:/var/lib/pleroma/static"
     env:
       POSTGRES_USER: "{{ db_user }}"
       POSTGRES_PASSWORD: "{{ db_pass }}"
