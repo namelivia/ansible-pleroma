@@ -1,7 +1,26 @@
 ---
+- name: Create the files directory
+  file:
+    path: "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files"
+    state: directory
+    mode: 0700
+
+- name: Create the docker-pleroma directory
+  file:
+    path: "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files/docker-pleroma"
+    state: directory
+    mode: 0700
+
+- name: Clone docker pleroma
+  - name: Git checkout
+  ansible.builtin.git:
+    repo: 'https://foosball.example.org/path/to/repo.git'
+    dest: "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files/docker-pleroma"
+    version: master
+
 - name: Build docker image
   docker_image:
     name: pleroma
     build:
-      path: ../docker-pleroma-copy/
+      path: "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files/docker-pleroma"
     source: build
