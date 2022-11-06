@@ -23,3 +23,18 @@
     build:
       path: "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files/docker-pleroma"
     source: build
+
+- name: Create app container
+  docker_container:
+    name: "{{ application_name }}"
+    image: "pleroma:latest"
+    memory: "200MB"
+    pull: true
+    restart_policy: "always"
+    log_driver: "awslogs"
+    log_options:
+      awslogs-region: "{{ cloudwatch_region }}"
+      awslogs-group: "{{ cloudwatch_log_group }}"
+      awslogs-stream: "{{ application_name }}"
+    networks:
+      - name: "pomerium"
