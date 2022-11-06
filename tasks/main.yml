@@ -13,6 +13,7 @@
       - db_user is defined
       - db_pass is defined
       - db_name is defined
+      - pleroma_config_path
 
 - name: Create the files directory
   file:
@@ -37,6 +38,14 @@
     path: "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files/static"
     state: directory
     mode: 0755
+
+- name: Copy pleroma config
+  copy:
+    src: "{{ pleroma_config_path }}"
+    dest: "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/config.exs"
+    owner: ubuntu
+    group: ubuntu
+    mode: '0644'
 
 - name: Clone docker pleroma
   git:
@@ -72,6 +81,7 @@
     volumes:
       - "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/uploads:/var/lib/pleroma/uploads"
       - "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/static:/var/lib/pleroma/static"
+      - "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/config.exs:/etc/pleroma/config.exs:ro"
     env:
       POSTGRES_USER: "{{ db_user }}"
       POSTGRES_PASSWORD: "{{ db_pass }}"
