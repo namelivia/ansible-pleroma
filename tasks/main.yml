@@ -53,4 +53,4 @@
     env:
       VIRTUAL_HOST: "{{ domain_name }}"
       LETSENCRYPT_HOST: "{{ domain_name }}"
-      VIRTUAL_PORT: "9000"
+      VIRTUAL_PORT: "4000"
