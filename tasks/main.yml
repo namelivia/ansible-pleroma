@@ -3,5 +3,5 @@
   docker_image:
     name: pleroma
     build:
-      path: ./docker_pleroma/
+      path: ./docker-pleroma/
     source: build
