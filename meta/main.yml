@@ -1,0 +1,14 @@
+galaxy_info:
+  role_name: pleroma
+  author: José Ignacio Amelivia Santiago <jignacio.amelivia@gmail.com>
+  description: Ansible role I use to install and configure pleroma
+  license: GPLv2
+  min_ansible_version: 2.5.1
+  dependencies:
+    - ansible-backups
+    - ansible-postgres
+  platforms:
+    - name: Ubuntu
+      versions:
+        - bionic
+        - focal
