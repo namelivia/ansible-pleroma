@@ -3,6 +3,6 @@
   hosts: all
   gather_facts: false
   tasks:
-    - name: "Include namelivia.pleroma"
+    - name: "Include pleroma"
       ansible.builtin.include_role:
-        name: "namelivia.pleroma"
+        name: "pleroma"
