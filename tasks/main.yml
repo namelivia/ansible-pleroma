@@ -22,6 +22,8 @@
     name: pleroma
     build:
       path: "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files/docker-pleroma"
+    cache_from:
+      - pleroma:latest
     source: build
 
 - name: Create app container
