@@ -53,7 +53,7 @@
       awslogs-stream: "pleroma-database"
     env:
       POSTGRES_USER: "pleroma"
-      POSTGRES_PASSWORD: "pleroma"
+      POSTGRES_PASSWORD: "ChangeMe!"
 
 - name: Create app container
   docker_container:
