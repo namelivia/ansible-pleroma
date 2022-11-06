@@ -7,6 +7,12 @@
       - domain_name is defined
       - cloudwatch_region is defined
       - cloudwatch_log_group is defined
+      - instance_name is defined
+      - admin_mail is defined
+      - notify_mail is defined
+      - db_user is defined
+      - db_pass is defined
+      - db_name is defined
 
 - name: Create the files directory
   file:
@@ -52,8 +58,8 @@
       awslogs-group: "{{ cloudwatch_log_group }}"
       awslogs-stream: "pleroma-database"
     env:
-      POSTGRES_USER: "pleroma"
-      POSTGRES_PASSWORD: "ChangeMe!"
+      POSTGRES_USER: "{{ db_user }}"
+      POSTGRES_PASSWORD: "{{ db_pass }}"
 
 - name: Create app container
   docker_container:
@@ -76,9 +82,9 @@
       VIRTUAL_PORT: "4000"
       DB_HOST: "pleroma-database"
       DOMAIN: "{{ domain_name }}"
-      INSTANCE_NAME: Pleroma
-      ADMIN_EMAIL: admin@example.com
-      NOTIFY_EMAIL: notify@example.com
-      DB_USER: pleroma
-      DB_PASS: ChangeMe!
-      DB_NAME: pleroma
+      INSTANCE_NAME: "{{ instance_name }}"
+      ADMIN_EMAIL: "{{ admin_mail }}"
+      NOTIFY_EMAIL: "{{ notify_mail }}"
+      DB_USER: "{{ db_user }}"
+      DB_PASS: "{{ db_pass }}"
+      DB_NAME: "{{ db_name }}"
