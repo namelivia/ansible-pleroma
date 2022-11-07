@@ -60,6 +60,10 @@
       path: "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files/docker-pleroma"
       cache_from:
         - pleroma:latest
+      args:
+        - UID: "1000"
+        - GID: "911"
+        - PLEROMA_VER: "develop"
     source: build
 
 - name: Create database container
