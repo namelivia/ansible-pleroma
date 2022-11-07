@@ -30,12 +30,16 @@
 - name: Create the uploads directory
   file:
     path: "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files/uploads"
+    owner: ubuntu
+    group: ubuntu
     state: directory
     mode: 0755
 
 - name: Create the static directory
   file:
     path: "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files/static"
+    owner: ubuntu
+    group: ubuntu
     state: directory
     mode: 0755
 
@@ -62,7 +66,7 @@
         - pleroma:latest
       args:
         - UID: "1000"
-        - GID: "911"
+        - GID: "1000"
         - PLEROMA_VER: "develop"
     source: build
 
