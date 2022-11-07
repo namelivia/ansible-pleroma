@@ -86,7 +86,6 @@
   docker_container:
     name: "{{ application_name }}"
     image: "pleroma:latest"
-    memory: "200MB"
     restart_policy: "always"
     log_driver: "awslogs"
     log_options:
