@@ -65,9 +65,9 @@
       cache_from:
         - pleroma:latest
       args:
-        - UID: "1000"
-        - GID: "1000"
-        - PLEROMA_VER: "develop"
+        UID: "1000"
+        GID: "1000"
+        PLEROMA_VER: "develop"
     source: build
 
 - name: Create database container
