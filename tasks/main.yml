@@ -14,6 +14,7 @@
       - db_pass is defined
       - db_name is defined
       - pleroma_config_path
+      - relay_list_path is defined
 
 - name: Create the files directory
   file:
@@ -50,6 +51,22 @@
     owner: ubuntu
     group: ubuntu
     mode: '0644'
+
+- name: Copy relay list
+  copy:
+    src: "{{ relay_list_path }}"
+    dest: "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/relay_list"
+    owner: ubuntu
+    group: ubuntu
+    mode: '0644'
+
+- name: Create relay import script
+  template:
+    src: add_relays.j2
+    dest: "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/add_relays.sh"
+    owner: root
+    group: root
+    mode: 0755
 
 - name: Clone docker pleroma
   git:
