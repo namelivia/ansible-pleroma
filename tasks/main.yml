@@ -43,6 +43,10 @@
     state: directory
     mode: 0755
 
+- name: Create the postgres data volumne
+  docker_volume:
+    name: postgres-data
+
 - name: Copy pleroma config
   copy:
     src: "{{ pleroma_config_path }}"
@@ -100,6 +104,8 @@
     log_options:
       loki-url: "{{ loki_url }}"
       loki-batch-size: "400"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
     env:
       POSTGRES_USER: "{{ db_user }}"
       POSTGRES_PASSWORD: "{{ db_pass }}"
@@ -117,6 +123,7 @@
       - "4000"
     networks:
       - name: "{{ docker_network_name }}"
+      - name: "bridge"
     volumes:
       - "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files/uploads:/var/lib/pleroma/uploads"
       - "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files/static:/var/lib/pleroma/static"
@@ -148,3 +155,7 @@
   include_role:
     name: ansible-backups
     tasks_from: setup-s3-backups
+
+- name: Restart proxy
+  shell: 
+    cmd: docker restart proxy
