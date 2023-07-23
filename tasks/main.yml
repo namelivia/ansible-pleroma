@@ -123,14 +123,13 @@
       - "4000"
     networks:
       - name: "{{ docker_network_name }}"
-      - name: "bridge"
+    published_ports:
+      - "0.0.0.0:{{ host_port }}:4000"
     volumes:
       - "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files/uploads:/var/lib/pleroma/uploads"
       - "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files/static:/var/lib/pleroma/static"
       - "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files/config.exs:/etc/pleroma/config.exs:ro"
     env:
-      VIRTUAL_HOST: "{{ domain_name }}"
-      LETSENCRYPT_HOST: "{{ domain_name }}"
       VIRTUAL_PORT: "4000"
       DB_HOST: "pleroma-database"
       DOMAIN: "{{ domain_name }}"
@@ -155,7 +154,3 @@
   include_role:
     name: ansible-backups
     tasks_from: setup-s3-backups
-
-- name: Restart proxy
-  shell: 
-    cmd: docker restart proxy
