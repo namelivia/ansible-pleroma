@@ -12,6 +12,7 @@
       - db_user is defined
       - db_pass is defined
       - db_name is defined
+      - host_port is defined
       - pleroma_config_path
       - relay_list_path is defined
 
