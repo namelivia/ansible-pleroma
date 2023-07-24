@@ -131,7 +131,6 @@
       - "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files/static:/var/lib/pleroma/static"
       - "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files/config.exs:/etc/pleroma/config.exs:ro"
     env:
-      VIRTUAL_PORT: "4000"
       DB_HOST: "pleroma-database"
       DOMAIN: "{{ domain_name }}"
       INSTANCE_NAME: "{{ instance_name }}"
