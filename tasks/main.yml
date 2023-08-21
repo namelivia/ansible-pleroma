@@ -126,7 +126,6 @@
       loki-batch-size: "400"
     exposed_ports:
       - "4000"
-    user: "{{uid}}:{{gid}}"
     networks:
       - name: "{{ docker_network_name }}"
     published_ports:
