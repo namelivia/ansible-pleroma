@@ -12,6 +12,10 @@
       - db_user is defined
       - db_pass is defined
       - db_name is defined
+      - uid is defined
+      - gid is defined
+      - user is defined
+      - group is defined
       - host_port is defined
       - pleroma_config_path
       - relay_list_path is defined
@@ -31,16 +35,16 @@
 - name: Create the uploads directory
   file:
     path: "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files/uploads"
-    owner: ubuntu
-    group: ubuntu
+    owner: "{{ user }}"
+    group: "{{ group }}"
     state: directory
     mode: 0755
 
 - name: Create the static directory
   file:
     path: "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files/static"
-    owner: ubuntu
-    group: ubuntu
+    owner: "{{ user }}"
+    group: "{{ group }}"
     state: directory
     mode: 0755
 
@@ -52,16 +56,16 @@
   copy:
     src: "{{ pleroma_config_path }}"
     dest: "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files/config.exs"
-    owner: ubuntu
-    group: ubuntu
+    owner: "{{ user }}"
+    group: "{{ group }}"
     mode: '0644'
 
 - name: Copy relay list
   copy:
     src: "{{ relay_list_path }}"
     dest: "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/relay_list"
-    owner: ubuntu
-    group: ubuntu
+    owner: "{{ user }}"
+    group: "{{ group }}"
     mode: '0644'
 
 - name: Create relay import script
@@ -86,8 +90,8 @@
       cache_from:
         - pleroma:latest
       args:
-        UID: "1000"
-        GID: "1000"
+        UID: "{{ uid }}"
+        GID: "{{ gid }}"
         PLEROMA_VER: "develop"
     source: build
 
@@ -122,6 +126,7 @@
       loki-batch-size: "400"
     exposed_ports:
       - "4000"
+    user: "{{uid}}:{{gid}}"
     networks:
       - name: "{{ docker_network_name }}"
     published_ports:
