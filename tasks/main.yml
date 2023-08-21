@@ -60,7 +60,7 @@
     dest: "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files/config.exs"
     owner: "{{ user }}"
     group: "{{ group }}"
-    mode: '0644'
+    mode: '0600'
 
 - name: Copy relay list
   copy:
