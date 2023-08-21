@@ -9,6 +9,7 @@
       - instance_name is defined
       - admin_mail is defined
       - notify_mail is defined
+      - database_container_name is defined
       - database_user is defined
       - database_password is defined
       - database_name is defined
@@ -48,9 +49,10 @@
     state: directory
     mode: 0755
 
-- name: Create the postgres data volumne
-  docker_volume:
-    name: postgres-data
+- name: Create database
+  include_role:
+    name: ansible-postgres
+    tasks_from: create-postgres-database-if-not-exists
 
 - name: Copy pleroma config
   copy:
@@ -95,26 +97,6 @@
         PLEROMA_VER: "develop"
     source: build
 
-- name: Create database container
-  docker_container:
-    name: "pleroma-database"
-    image: "postgres:latest"
-    restart_policy: "always"
-    cleanup: true
-    exposed_ports:
-      - "5432"
-    networks:
-      - name: "{{ docker_network_name }}"
-    log_driver: "loki"
-    log_options:
-      loki-url: "{{ loki_url }}"
-      loki-batch-size: "400"
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-    env:
-      POSTGRES_USER: "{{ database_user }}"
-      POSTGRES_PASSWORD: "{{ database_password }}"
-
 - name: Create app container
   docker_container:
     name: "{{ application_name }}"
@@ -135,7 +117,7 @@
       - "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files/static:/var/lib/pleroma/static"
       - "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files/config.exs:/etc/pleroma/config.exs:ro"
     env:
-      DB_HOST: "pleroma-database"
+      DB_HOST: "{{ database_container_name }}"
       DOMAIN: "{{ domain_name }}"
       INSTANCE_NAME: "{{ instance_name }}"
       ADMIN_EMAIL: "{{ admin_mail }}"
