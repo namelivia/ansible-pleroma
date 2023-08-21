@@ -10,7 +10,7 @@
       - admin_mail is defined
       - notify_mail is defined
       - database_user is defined
-      - database_pass is defined
+      - database_password is defined
       - database_name is defined
       - uid is defined
       - gid is defined
@@ -113,7 +113,7 @@
       - postgres-data:/var/lib/postgresql/data
     env:
       POSTGRES_USER: "{{ database_user }}"
-      POSTGRES_PASSWORD: "{{ database_pass }}"
+      POSTGRES_PASSWORD: "{{ database_password }}"
 
 - name: Create app container
   docker_container:
@@ -141,7 +141,7 @@
       ADMIN_EMAIL: "{{ admin_mail }}"
       NOTIFY_EMAIL: "{{ notify_mail }}"
       DB_USER: "{{ database_user }}"
-      DB_PASS: "{{ database_pass }}"
+      DB_PASS: "{{ database_password }}"
       DB_NAME: "{{ database_name }}"
 
 - name: Setup database backups
