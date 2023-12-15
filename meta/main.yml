@@ -5,9 +5,6 @@ galaxy_info:
   description: Ansible role I use to install and configure pleroma
   license: GPLv2
   min_ansible_version: 2.5.1
-  dependencies:
-    - ansible-backups
-    - ansible-postgres
   platforms:
     - name: Ubuntu
       versions:

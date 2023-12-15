@@ -25,13 +25,13 @@
   file:
     path: "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files"
     state: directory
-    mode: 0700
+    mode: "0700"
 
 - name: Create the docker-pleroma directory
   file:
     path: "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files/docker-pleroma"
     state: directory
-    mode: 0700
+    mode: "0700"
 
 - name: Create the uploads directory
   file:
@@ -39,7 +39,7 @@
     owner: "{{ user }}"
     group: "{{ group }}"
     state: directory
-    mode: 0755
+    mode: "0755"
 
 - name: Create the static directory
   file:
@@ -47,7 +47,7 @@
     owner: "{{ user }}"
     group: "{{ group }}"
     state: directory
-    mode: 0755
+    mode: "0755"
 
 - name: Create database
   include_role:
@@ -68,7 +68,7 @@
     dest: "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/relay_list"
     owner: "{{ user }}"
     group: "{{ group }}"
-    mode: '0644'
+    mode: "0644"
 
 - name: Create relay import script
   template:
@@ -76,7 +76,7 @@
     dest: "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/add_relays.sh"
     owner: root
     group: root
-    mode: 0755
+    mode: "0755"
 
 - name: Clone docker pleroma
   git:
@@ -140,3 +140,10 @@
   include_role:
     name: ansible-backups
     tasks_from: setup-s3-backups
+
+- name: Setup restic backups
+  include_role:
+    name: ansible-backups
+    tasks_from: setup-restic-backups
+  vars:
+    file_path: "{{ hostvars[inventory_hostname].working_directory }}{{ application_name }}/files"
